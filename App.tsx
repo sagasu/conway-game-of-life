@@ -1,33 +1,48 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState, TouchableWithoutFeedback} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native';
+import produce from 'immer';
+
 
 export default function App() {
   const ROWS = 50;
   const COLUMNS = 50;
 
   const[grid, setGrid] = useState(Array.from({length: ROWS}).map(() => Array.from({length: COLUMNS}).fill(0)));
-  const onpress = () => {};
+  const onpress = () => {
+    
+  };
   return (
-    <TouchableWithoutFeedback onPress={onpress}>
+
     <View style={styles.container}>
       <div style={{
         display: 'grid',
         gridTemplateColumns: `repeat(${COLUMNS}, 20px)`
       }}>
         {grid.map((rows, index) => 
-            rows.map((columns, colIndex) => <div key = {`${index}_${colIndex}`} 
+            rows.map((columns, colIndex) => <TouchableWithoutFeedback 
+              key = {`${index}_${colIndex}_twf`}
+              onPress={() => {
+              //using immer to manipulate array using useState hook.
+              const newGrid = produce(grid, gridCopy => {
+                gridCopy[index][colIndex] = 1;
+              });
+              
+              setGrid(newGrid);
+            }}><View><div 
+              key = {`${index}_${colIndex}`} 
+              
               style={{
                 width: 20,
                 height: 20,
                 backgroundColor: grid[index][colIndex] ? 'blue': undefined,
                 border: 'solid 1px black'
-            }}></div>))}
+            }}></div></View></TouchableWithoutFeedback>))}
       </div>
       <Text>Open up App.tsx to start working on your app!</Text>
       <StatusBar style="auto" />
     </View>
-    </TouchableWithoutFeedback>
+    
   );
 }
 
