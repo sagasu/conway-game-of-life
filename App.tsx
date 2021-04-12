@@ -9,12 +9,12 @@ export default function App() {
   const COLUMNS = 50;
 
   const[grid, setGrid] = useState(Array.from({length: ROWS}).map(() => Array.from({length: COLUMNS}).fill(0)));
-  const onpress = () => {
-    
-  };
+  const [running, setRunning] = useState(false);
+
   return (
 
     <View style={styles.container}>
+      <button>{running ? 'stop' : 'start'}</button>
       <div style={{
         display: 'grid',
         gridTemplateColumns: `repeat(${COLUMNS}, 20px)`
@@ -25,7 +25,7 @@ export default function App() {
               onPress={() => {
               //using immer to manipulate array using useState hook.
               const newGrid = produce(grid, gridCopy => {
-                gridCopy[index][colIndex] = 1;
+                gridCopy[index][colIndex] = gridCopy[index][colIndex] ? 0: 1;
               });
               
               setGrid(newGrid);
