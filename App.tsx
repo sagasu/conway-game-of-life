@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native';
 import produce from 'immer';
 
@@ -11,10 +11,18 @@ export default function App() {
   const[grid, setGrid] = useState(Array.from({length: ROWS}).map(() => Array.from({length: COLUMNS}).fill(0)));
   const [running, setRunning] = useState(false);
 
+  const runSimulation = useCallback(() => {
+    if(!running) return;
+
+    setTimeout(runSimulation, 1000); //really nice recursive pattern, that's why it is wrapped in useCallback hook.
+  }, []);
+
   return (
 
     <View style={styles.container}>
-      <button>{running ? 'stop' : 'start'}</button>
+      <button onClick={() => {
+        setRunning(!running);
+      }}>{running ? 'stop' : 'start'}</button>
       <div style={{
         display: 'grid',
         gridTemplateColumns: `repeat(${COLUMNS}, 20px)`
