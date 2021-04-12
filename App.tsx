@@ -39,7 +39,6 @@ export default function App() {
                 border: 'solid 1px black'
             }}></div></View></TouchableWithoutFeedback>))}
       </div>
-      <Text>Open up App.tsx to start working on your app!</Text>
       <StatusBar style="auto" />
     </View>
     
